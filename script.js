@@ -112,6 +112,7 @@ obstacle.update();
 
 
 let startGame = false;
+let score = 0;
 
 const button = document.querySelector('button');
 
@@ -121,13 +122,16 @@ button.addEventListener('click', ()=>{
     button.remove();
 })
 
+
 function animate(){
     if (!startGame) return; 
+    score += 0.01;
     requestAnimationFrame(animate);
     c.clearRect(0,0, innerWidth, innerHeight);
     ground.update();
     player.update();
     obstacle.update();
+
     if(obstacle.position.x <= -3000){
         obstacle.position.x =  Math.floor(Math.random()* 100);
         obstacle.update();
@@ -138,33 +142,44 @@ function animate(){
         ground.position.x = 0 
     }
 
-    if ((obstacle.position.x + 1280 + obstacle.width) - player.position.x - player.width   <= 8 
-            && (obstacle.position.x + 1280 + obstacle.width) - player.position.x - player.width   >= -8
+    if ((obstacle.position.x + 1280 + obstacle.width) - player.position.x - player.width   <= 4
+            && (obstacle.position.x + 1280 + obstacle.width) - player.position.x - player.width   >= -4
             && player.position.y + player.height > obstacle.position.y){
-        startGame = false
+            endGame();
 
-    } else if((obstacle.position.x + 2000 + obstacle.width) - player.position.x - player.width   <= 8
-            && (obstacle.position.x + 2000 + obstacle.width) - player.position.x - player.width   >= -8
+    } else if((obstacle.position.x + 2000 + obstacle.width) - player.position.x - player.width   <= 4
+            && (obstacle.position.x + 2000 + obstacle.width) - player.position.x - player.width   >= -4
             && player.position.y + player.height > obstacle.position.y){
-        startGame = false
+            endGame();
 
-    }else if((obstacle.position.x + 3000 + obstacle.width) - player.position.x - player.width   <= 8 
-            && (obstacle.position.x + 3000 + obstacle.width) - player.position.x - player.width   >= -8
+    }else if((obstacle.position.x + 3000 + obstacle.width) - player.position.x - player.width   <= 4
+            && (obstacle.position.x + 3000 + obstacle.width) - player.position.x - player.width   >= -4
             && player.position.y + player.height > obstacle.position.y){
-        startGame = false
+            endGame();
     }
 
-
-    console.log(player.position.y)
+    if (score > 3){
+        obstacle.velocity += 0.001;
+        ground.velocity += 0.001;
     }
 
+    
+    }
 
+function endGame(){
+    startGame = false;
+    
+    let p = document.createElement('div');
+    p.textContent = 'Yor Score is:' + Math.round(score)
+    document.body.appendChild(p);
+
+
+}
 
   
 
 
     addEventListener('keydown', ({code})=>{
-    console
     if (code == 'Space' && player.velocity.y == 0){
         player.velocity.y = -20;
     }})
