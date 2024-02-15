@@ -1,16 +1,16 @@
 const canvas = document.querySelector('canvas');
 canvas.width = 1280;
 canvas.height = 720;
-
-
 c = canvas.getContext('2d');
 const gravity = 0.9;
+
+
 class Player{
     constructor () {
         this.height = 100
         this.position = {
             x:100,
-            y:canvas.height - this.height - 10
+            y:canvas.height - this.height 
         }
         this.width = 88
         this.height = 94
@@ -39,6 +39,7 @@ class Player{
     }
 }
 
+
 class Ground{
     constructor(){
         this.position={
@@ -64,6 +65,7 @@ class Ground{
         
     }
 }
+
 
 class Obstacle{
     constructor(){
@@ -102,25 +104,15 @@ class Obstacle{
     }
 } 
 
+
 const player = new Player();
 const ground = new Ground();
 const obstacle = new Obstacle();
-
 ground.update();
 player.update();
 obstacle.update();
-
-
 let startGame = false;
 let score = 0;
-
-const button = document.querySelector('button');
-
-button.addEventListener('click', ()=>{
-    startGame = true;
-    animate();
-    button.remove();
-})
 
 
 function animate(){
@@ -131,39 +123,9 @@ function animate(){
     ground.update();
     player.update();
     obstacle.update();
-
-    if(obstacle.position.x <= -3000){
-        obstacle.position.x =  Math.floor(Math.random()* 100);
-        obstacle.update();
-        obstacle.update();
-    }
-
-    if (ground.position.x <= -2399){
-        ground.position.x = 0 
-    }
-
-    if ((obstacle.position.x + 1280 + obstacle.width) - player.position.x - player.width   <= 4
-            && (obstacle.position.x + 1280 + obstacle.width) - player.position.x - player.width   >= -4
-            && player.position.y + player.height > obstacle.position.y){
-            endGame();
-
-    } else if((obstacle.position.x + 2000 + obstacle.width) - player.position.x - player.width   <= 4
-            && (obstacle.position.x + 2000 + obstacle.width) - player.position.x - player.width   >= -4
-            && player.position.y + player.height > obstacle.position.y){
-            endGame();
-
-    }else if((obstacle.position.x + 3000 + obstacle.width) - player.position.x - player.width   <= 4
-            && (obstacle.position.x + 3000 + obstacle.width) - player.position.x - player.width   >= -4
-            && player.position.y + player.height > obstacle.position.y){
-            endGame();
-    }
-
-    if (score > 3){
-        obstacle.velocity += 0.001;
-        ground.velocity += 0.001;
-    }
-
-    
+    playerJump();
+    levelMovment();
+    collisionDetection();   
     }
 
 function endGame(){
@@ -177,14 +139,56 @@ function endGame(){
 }
 
   
-
-
+function playerJump(){
     addEventListener('keydown', ({code})=>{
     if (code == 'Space' && player.velocity.y == 0){
         player.velocity.y = -20;
     }})
+}
+
+    
+function levelMovment(){
+    if(obstacle.position.x <= -3000){
+        obstacle.position.x =  Math.floor(Math.random()* 100);
+        obstacle.update();
+        obstacle.update();
+    }
+
+    if (ground.position.x <= -2399){
+        ground.position.x = 0 
+    }
+}
 
 
+function collisionDetection(){
+    
+    if ((obstacle.position.x + 1280 + obstacle.width) - player.position.x - player.width   <= 9
+            && (obstacle.position.x + 1280 + obstacle.width) - player.position.x - player.width   >= -9
+            && player.position.y > 570){
+            endGame();
+
+    } else if((obstacle.position.x + 2000 + obstacle.width) - player.position.x - player.width   <= 9
+            && (obstacle.position.x + 2000 + obstacle.width) - player.position.x - player.width   >= -9
+            && player.position.y + player.height > obstacle.position.y){
+            endGame();
+
+    }else if((obstacle.position.x + 3000 + obstacle.width) - player.position.x - player.width   <= 9
+            && (obstacle.position.x + 3000 + obstacle.width) - player.position.x - player.width   >= -9
+            && player.position.y + player.height >= obstacle.position.y + obstacle.height){
+            endGame();
+    }
+
+}
+
+
+const button = document.querySelector('button');
+button.addEventListener('click', ()=>{
+startGame = true;
+animate();
+button.remove();
+})
+
+console.log(obstacle.position.y+ obstacle.height);
 
 
 
