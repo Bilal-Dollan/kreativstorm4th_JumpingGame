@@ -99,6 +99,7 @@ player.update();
 obstacle.update();
 let startGame = false;
 let score = 0;
+let obstacleCount = 0
 
 function animate() {
   if (!startGame) return;
@@ -116,9 +117,14 @@ function animate() {
 function endGame() {
   startGame = false;
 
-  let p = document.createElement("div");
-  p.textContent = "Yor Score is:" + Math.round(score);
-  document.body.appendChild(p);
+  let container = document.createElement("div");
+  let scoreCount = document.createElement("div");
+  container.classList.add('container');
+  scoreCount.classList.add('score');
+  container.textContent = "Obstacle count " + obstacleCount;
+  scoreCount.textContent = "Your Score is:" + Math.round(score);
+  document.body.appendChild(container);
+  container.appendChild(scoreCount);
 }
 
 function playerJump() {
@@ -143,53 +149,30 @@ function levelMovment() {
 
 function collisionDetection() {
   if (
-    obstacle.position.x +
-      1280 +
-      obstacle.width -
-      player.position.x -
-      player.width <=
-      9 &&
-    obstacle.position.x +
-      1280 +
-      obstacle.width -
-      player.position.x -
-      player.width >=
-      -9 &&
+    obstacle.position.x + 1280 + obstacle.width - player.position.x - player.width <= 9 &&
+    obstacle.position.x + 1280 + obstacle.width - player.position.x - player.width >= -9 &&
     player.position.y > 570
   ) {
     endGame();
   } else if (
-    obstacle.position.x +
-      2000 +
-      obstacle.width -
-      player.position.x -
-      player.width <=
-      9 &&
-    obstacle.position.x +
-      2000 +
-      obstacle.width -
-      player.position.x -
-      player.width >=
-      -9 &&
-    player.position.y + player.height > obstacle.position.y
+    obstacle.position.x + 2000 + obstacle.width - player.position.x - player.width <= 9 &&
+    obstacle.position.x + 2000 + obstacle.width - player.position.x - player.width >= -9 &&
+    player.position.y > 570
   ) {
     endGame();
   } else if (
-    obstacle.position.x +
-      3000 +
-      obstacle.width -
-      player.position.x -
-      player.width <=
-      9 &&
-    obstacle.position.x +
-      3000 +
-      obstacle.width -
-      player.position.x -
-      player.width >=
-      -9 &&
-    player.position.y + player.height >= obstacle.position.y + obstacle.height
+    obstacle.position.x + 3000 + obstacle.width - player.position.x - player.width <= 9 &&
+    obstacle.position.x + 3000 + obstacle.width - player.position.x - player.width >= -9 &&
+    player.position.y > 570
   ) {
     endGame();
+  } else if(
+    (obstacle.position.x + 1280 <= 110 && obstacle.position.x + 1280 >= 102) ||
+    (obstacle.position.x + 2000 <= 110 && obstacle.position.x + 2000 >= 102) ||
+    (obstacle.position.x + 3000 <= 110 && obstacle.position.x + 3000 >= 102)
+  ){
+    obstacleCount ++;
+    console.log(obstacleCount)
   }
 }
 
