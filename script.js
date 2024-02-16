@@ -2,7 +2,7 @@ const canvas = document.querySelector("canvas");
 canvas.width = 1280;
 canvas.height = 720;
 c = canvas.getContext("2d");
-const gravity = 0.9;
+const gravity = 0.9
 
 class Player {
   constructor() {
