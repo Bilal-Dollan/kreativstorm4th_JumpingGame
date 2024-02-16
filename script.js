@@ -100,7 +100,6 @@ player.update();
 obstacle.update();
 let startGame = false;
 let score = 0;
-let obstacleCount = 0
 
 function animate() {
   if (!startGame) return;
@@ -119,13 +118,11 @@ function endGame() {
   startGame = false;
 
   let container = document.createElement("div");
-  let scoreCount = document.createElement("div");
   container.classList.add('container');
   scoreCount.classList.add('score');
-  container.textContent = "Obstacle count " + obstacleCount;
   scoreCount.textContent = "Your Score is:" + Math.round(score);
   document.body.appendChild(container);
-  container.appendChild(scoreCount);
+
 }
 
 function playerJump() {
@@ -167,14 +164,7 @@ function collisionDetection() {
     player.position.y > 570
   ) {
     endGame();
-  } else if(
-    (obstacle.position.x + 1280 <= 110 && obstacle.position.x + 1280 >= 102) ||
-    (obstacle.position.x + 2000 <= 110 && obstacle.position.x + 2000 >= 102) ||
-    (obstacle.position.x + 3000 <= 110 && obstacle.position.x + 3000 >= 102)
-  ){
-    obstacleCount ++;
-    console.log(obstacleCount)
-  }
+  } 
 }
 
 const button = document.querySelector("button");
@@ -184,10 +174,9 @@ button.addEventListener("click", () => {
   button.remove();
 });
 
-console.log(obstacle.position.y + obstacle.height);
 
 function playJumpSound() {
-  jumpSound.currentTime = 0; // Reset the sound to the beginning
+  jumpSound.currentTime = 0; 
   jumpSound.play();
 }
 
