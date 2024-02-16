@@ -9,6 +9,7 @@ const gravity = 0.9;
 let startGame = false;
 let score = 0;
 
+
 class Player {
   constructor() {
     this.height = 100;
@@ -111,69 +112,31 @@ function animate() {
 
 function collisionDetection() {
   if (
-    obstacle.position.x +
-      1280 +
-      obstacle.width -
-      player.position.x -
-      player.width <=
-      9 &&
-    obstacle.position.x +
-      1280 +
-      obstacle.width -
-      player.position.x -
-      player.width >=
-      -9 &&
+    obstacle.position.x + 1280 + obstacle.width - player.position.x - player.width <= 9 &&
+    obstacle.position.x + 1280 + obstacle.width - player.position.x - player.width >= -9 &&
     player.position.y > 570
   ) {
     endGame();
   } else if (
-    obstacle.position.x +
-      2000 +
-      obstacle.width -
-      player.position.x -
-      player.width <=
-      9 &&
-    obstacle.position.x +
-      2000 +
-      obstacle.width -
-      player.position.x -
-      player.width >=
-      -9 &&
-    player.position.y + player.height > obstacle.position.y
+    obstacle.position.x + 2000 + obstacle.width - player.position.x - player.width <= 9 &&
+    obstacle.position.x + 2000 + obstacle.width - player.position.x - player.width >= -9 &&
+    player.position.y > 570
   ) {
     endGame();
   } else if (
-    obstacle.position.x +
-      3000 +
-      obstacle.width -
-      player.position.x -
-      player.width <=
-      9 &&
-    obstacle.position.x +
-      3000 +
-      obstacle.width -
-      player.position.x -
-      player.width >=
-      -9 &&
-    player.position.y + player.height >= obstacle.position.y + obstacle.height
+    obstacle.position.x + 3000 + obstacle.width - player.position.x - player.width <= 9 &&
+    obstacle.position.x + 3000 + obstacle.width - player.position.x - player.width >= -9 &&
+    player.position.y > 570
   ) {
     endGame();
-  }
+  } 
 }
 
 function endGame() {
   startGame = false;
-
-  // Pause the background music
   backgroundMusic.pause();
-
-  // Reset the background music to the beginning
   backgroundMusic.currentTime = 0;
-
-  // Play the game over sound
   playGameOverSound();
-
-  // Display the score
   let p = document.createElement("div");
   p.textContent = "Your Score is: " + Math.round(score);
   document.body.appendChild(p);
