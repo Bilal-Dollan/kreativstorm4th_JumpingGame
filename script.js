@@ -216,7 +216,6 @@ function playGameOverSound() {
 }
 
 function playJumpSound() {
-  console.log("Jump sound played");
   let jumpSound = document.getElementById("jumpSound");
   jumpSound.currentTime = 0;
   jumpSound.play();
