@@ -1,8 +1,13 @@
 const canvas = document.querySelector("canvas");
 canvas.width = 1280;
 canvas.height = 720;
-c = canvas.getContext("2d");
+const c = canvas.getContext("2d");
+
+const backgroundMusic = document.getElementById("backgroundMusic");
+
 const gravity = 0.9;
+let startGame = false;
+let score = 0;
 
 class Player {
   constructor() {
@@ -12,7 +17,6 @@ class Player {
       y: canvas.height - this.height,
     };
     this.width = 88;
-    this.height = 94;
     this.velocity = {
       x: 0,
       y: 10,
@@ -54,6 +58,9 @@ class Ground {
   update() {
     this.draw();
     this.position.x -= this.velocity;
+    if (this.position.x <= -2399) {
+      this.position.x = 0;
+    }
   }
 }
 
@@ -68,37 +75,25 @@ class Obstacle {
     this.velocity = 8;
   }
 
-  draw1() {
+  draw() {
     let obstacleImage = document.getElementById("obstacle");
     c.drawImage(obstacleImage, this.position.x + 1280, this.position.y);
-  }
-
-  draw2() {
-    let obstacleImage = document.getElementById("obstacle");
     c.drawImage(obstacleImage, this.position.x + 2000, this.position.y);
-  }
-
-  draw3() {
-    let obstacleImage = document.getElementById("obstacle");
     c.drawImage(obstacleImage, this.position.x + 3000, this.position.y);
   }
 
   update() {
-    this.draw1();
-    this.draw2();
-    this.draw3();
+    this.draw();
     this.position.x -= this.velocity;
+    if (this.position.x <= -3000) {
+      this.position.x = Math.floor(Math.random() * 100) + 100;
+    }
   }
 }
 
 const player = new Player();
 const ground = new Ground();
 const obstacle = new Obstacle();
-ground.update();
-player.update();
-obstacle.update();
-let startGame = false;
-let score = 0;
 
 function animate() {
   if (!startGame) return;
@@ -108,36 +103,9 @@ function animate() {
   ground.update();
   player.update();
   obstacle.update();
-  playerJump();
-  levelMovment();
   collisionDetection();
-}
-
-function endGame() {
-  startGame = false;
-
-  let p = document.createElement("div");
-  p.textContent = "Yor Score is:" + Math.round(score);
-  document.body.appendChild(p);
-}
-
-function playerJump() {
-  addEventListener("keydown", ({ code }) => {
-    if (code == "Space" && player.velocity.y == 0) {
-      player.velocity.y = -20;
-    }
-  });
-}
-
-function levelMovment() {
-  if (obstacle.position.x <= -3000) {
-    obstacle.position.x = Math.floor(Math.random() * 100);
-    obstacle.update();
-    obstacle.update();
-  }
-
-  if (ground.position.x <= -2399) {
-    ground.position.x = 0;
+  if (player.velocity.y === 0 && !isBackgroundMusicPlaying) {
+    playBackgroundMusic();
   }
 }
 
@@ -193,26 +161,71 @@ function collisionDetection() {
   }
 }
 
+function endGame() {
+  startGame = false;
+
+  // Pause the background music
+  backgroundMusic.pause();
+
+  // Reset the background music to the beginning
+  backgroundMusic.currentTime = 0;
+
+  // Play the game over sound
+  playGameOverSound();
+
+  // Display the score
+  let p = document.createElement("div");
+  p.textContent = "Your Score is: " + Math.round(score);
+  document.body.appendChild(p);
+}
+
 const button = document.querySelector("button");
 button.addEventListener("click", () => {
   startGame = true;
-  animate();
+  score = 0;
   button.remove();
+  playBackgroundMusic();
+  animate();
 });
+let isBackgroundMusicPlaying = false;
 
-console.log(obstacle.position.y + obstacle.height);
+function playBackgroundMusic() {
+  backgroundMusic.currentTime = 0;
+  backgroundMusic.play();
+  isBackgroundMusicPlaying = true;
+}
+
+function pauseBackgroundMusic() {
+  backgroundMusic.pause();
+  isBackgroundMusicPlaying = false;
+}
+
+backgroundMusic.addEventListener(
+  "ended",
+  function () {
+    this.currentTime = 0;
+    this.play();
+  },
+  false
+);
+
+function playGameOverSound() {
+  let gameOverSound = document.getElementById("gameOverSound");
+  gameOverSound.currentTime = 0;
+  gameOverSound.play();
+}
 
 function playJumpSound() {
-  jumpSound.currentTime = 0; // Reset the sound to the beginning
+  console.log("Jump sound played");
+  let jumpSound = document.getElementById("jumpSound");
+  jumpSound.currentTime = 0;
   jumpSound.play();
 }
 
-function playerJump() {
-  addEventListener("keydown", ({ code }) => {
-    if (code == "Space" && player.velocity.y == 0) {
-      player.velocity.y = -20;
-      playJumpSound();
-    }
-  });
-}
-jumpSound.preload = "auto";
+addEventListener("keydown", ({ code }) => {
+  if (code === "Space" && player.velocity.y === 0) {
+    playJumpSound();
+    player.velocity.y = -20;
+    pauseBackgroundMusic();
+  }
+});
