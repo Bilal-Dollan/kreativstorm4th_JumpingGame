@@ -117,11 +117,9 @@ function animate() {
 function endGame() {
   startGame = false;
 
-  let container = document.createElement("div");
-  container.classList.add('container');
-  scoreCount.classList.add('score');
+  let scoreCount = document.createElement("div");
   scoreCount.textContent = "Your Score is:" + Math.round(score);
-  document.body.appendChild(container);
+  document.body.appendChild(scoreCount);
 
 }
 
