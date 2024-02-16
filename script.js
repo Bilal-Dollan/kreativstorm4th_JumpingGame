@@ -172,6 +172,7 @@ button.addEventListener("click", () => {
   button.remove();
 });
 
+let x = 1;
 
 function playJumpSound() {
   jumpSound.currentTime = 0; 
