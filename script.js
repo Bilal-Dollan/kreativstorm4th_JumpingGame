@@ -4,7 +4,7 @@ canvas.height = 720;
 c = canvas.getContext('2d');
 const gravity = 0.9;
 
-
+let height = 70;
 class Player{
     constructor () {
         this.height = 100
@@ -13,7 +13,7 @@ class Player{
             y:canvas.height - this.height 
         }
         this.width = 88
-        this.height = 94
+        
         this.velocity = {
             x:0,
             y:10
@@ -32,10 +32,7 @@ class Player{
             this.velocity.y += gravity;
         }else{
             this.velocity.y = 0;
-        }
-
-       
-        
+        }        
     }
 }
 
@@ -54,15 +51,11 @@ class Ground{
         let groundImage = document.getElementById('ground');
         c.drawImage(groundImage, this.position.x, this.position.y)
         c.drawImage(groundImage, this.position.x + 2399, this.position.y)
-
-      
     }
 
     update(){
         this.draw();
-        this.position.x -= this.velocity;
-
-        
+        this.position.x -= this.velocity;  
     }
 }
 
@@ -81,19 +74,16 @@ class Obstacle{
     draw1(){
         let obstacleImage = document.getElementById('obstacle');
         c.drawImage(obstacleImage, this.position.x +1280, this.position.y);
-
     }
 
     draw2(){
         let obstacleImage = document.getElementById('obstacle');
         c.drawImage(obstacleImage, this.position.x + 2000, this.position.y);
-
     }
 
     draw3(){
         let obstacleImage = document.getElementById('obstacle');
         c.drawImage(obstacleImage, this.position.x + 3000, this.position.y);
-
     }
 
     update(){
@@ -134,8 +124,6 @@ function endGame(){
     let p = document.createElement('div');
     p.textContent = 'Yor Score is:' + Math.round(score)
     document.body.appendChild(p);
-
-
 }
 
   
@@ -188,7 +176,7 @@ animate();
 button.remove();
 })
 
-console.log(obstacle.position.y+ obstacle.height);
+
 
 
 
