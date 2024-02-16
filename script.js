@@ -4,7 +4,6 @@ canvas.height = 720;
 c = canvas.getContext("2d");
 const gravity = 0.9;
 
-consle.log('DD')
 class Player {
   constructor() {
     this.height = 100;
