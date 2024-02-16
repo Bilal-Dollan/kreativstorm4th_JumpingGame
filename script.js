@@ -5,7 +5,7 @@ c = canvas.getContext("2d");
 const gravity = 0.9;
 
 
-class Player1 {
+class Player {
   constructor() {
     this.height = 100;
     this.position = {
@@ -92,7 +92,7 @@ class Obstacle {
   }
 }
 
-const player = new Player1();
+const player = new Player();
 const ground = new Ground();
 const obstacle = new Obstacle();
 ground.update();
