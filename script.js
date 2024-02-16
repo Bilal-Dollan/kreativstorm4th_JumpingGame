@@ -4,36 +4,8 @@ canvas.height = 720;
 c = canvas.getContext("2d");
 const gravity = 0.9;
 
-class Player {
-  constructor() {
-    this.height = 100;
-    this.position = {
-      x: 100,
-      y: canvas.height - this.height,
-    };
-    this.width = 88;
-    this.height = 94;
-    this.velocity = {
-      x: 0,
-      y: 10,
-    };
-  }
 
-  draw() {
-    let dinoImage = document.getElementById("dino");
-    c.drawImage(dinoImage, this.position.x, this.position.y);
-  }
 
-  update() {
-    this.draw();
-    this.position.y += this.velocity.y;
-    if (this.position.y + this.height + this.velocity.y <= canvas.height) {
-      this.velocity.y += gravity;
-    } else {
-      this.velocity.y = 0;
-    }
-  }
-}
 
 class Ground {
   constructor() {
@@ -91,6 +63,7 @@ class Obstacle {
   }
 }
 
+
 const player = new Player();
 const ground = new Ground();
 const obstacle = new Obstacle();
@@ -99,6 +72,8 @@ player.update();
 obstacle.update();
 let startGame = false;
 let score = 0;
+
+
 
 function animate() {
   if (!startGame) return;
@@ -111,6 +86,7 @@ function animate() {
   playerJump();
   levelMovment();
   collisionDetection();
+
 }
 
 function endGame() {
@@ -193,12 +169,15 @@ function collisionDetection() {
   }
 }
 
+
+
 const button = document.querySelector("button");
 button.addEventListener("click", () => {
   startGame = true;
   animate();
   button.remove();
 });
+
 
 console.log(obstacle.position.y + obstacle.height);
 
