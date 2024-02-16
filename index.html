@@ -1,20 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Jumping Game</title>
-    <link rel="stylesheet" href="./style.css" />
-    <audio id="jumpSound" src="./sound/jump.mp3"></audio>
-  </head>
-  <body>
-    <canvas>
-      <img src="./assets/dino-stationary.png" id="dino" />
-      <img src="./assets/ground.png" id="ground" />
-      <img src="./assets/cactus.png" id="obstacle" />
-    </canvas>
-    <button>Start The Game</button>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Jumping Game</title>
+  <link rel="stylesheet" href="./style.css" />
+</head>
+<body>
+  <canvas>
+    <img src="./assets/dino-stationary.png" id="dino" alt="Dino" />
+    <img src="./assets/ground.png" id="ground" alt="Ground" />
+    <img src="./assets/cactus.png" id="obstacle" alt="Obstacle" />
+  </canvas>
+  <button>Start The Game</button>
+  
+  <audio id="jumpSound" src="./sound/jump.mp3" preload="auto"></audio>
+  <audio id="backgroundMusic" src="./sound/background.mp3" preload="auto"></audio>
+  <audio id="gameOverSound" src="./sound/gameover.mp3" preload="auto"></audio>
 
-    <script src="./script.js"></script>
-  </body>
+  <script src="./script.js"></script>
+</body>
 </html>
