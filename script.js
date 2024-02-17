@@ -1,14 +1,15 @@
+alert('This is a simple jumping game inspired by the classic Chrome dinosaur game, where the player controls a character and jumps over obstacles to avoid collision.')
+
 const canvas = document.querySelector("canvas");
 canvas.width = 1280;
 canvas.height = 720;
 const c = canvas.getContext("2d");
 
 const backgroundMusic = document.getElementById("backgroundMusic");
-
 const gravity = 0.9;
 let startGame = false;
 let score = 0;
-
+let gameSpeedMultiplayer = 0;
 
 class Player {
   constructor() {
@@ -22,21 +23,34 @@ class Player {
       x: 0,
       y: 10,
     };
+
+    this.animationFrames = [document.getElementById("dino1"), document.getElementById("dino2")];
+    this.currentFrame = 0;
+    this.frameCount = 0;
+    this.frameSpeed = 15;
   }
 
   draw() {
-    let dinoImage = document.getElementById("dino");
-    c.drawImage(dinoImage, this.position.x, this.position.y);
+     let currentFrameImage = this.animationFrames[this.currentFrame];
+     c.drawImage(currentFrameImage, this.position.x, this.position.y);
   }
 
   update() {
     this.draw();
+    this.animate();
     this.position.y += this.velocity.y;
     if (this.position.y + this.height + this.velocity.y <= canvas.height) {
       this.velocity.y += gravity;
     } else {
       this.velocity.y = 0;
     }
+  }
+
+  animate(){
+    this.frameCount++;
+    if (this.frameCount >= this.frameSpeed) {
+      this.frameCount = 0;
+      this.currentFrame = (this.currentFrame + 1) % this.animationFrames.length;}
   }
 }
 
@@ -47,7 +61,7 @@ class Ground {
       y: canvas.height - 40,
     };
     this.width = 50;
-    this.velocity = 8;
+    this.velocity = 6;
   }
 
   draw() {
@@ -58,7 +72,7 @@ class Ground {
 
   update() {
     this.draw();
-    this.position.x -= this.velocity;
+    this.position.x -= (this.velocity + gameSpeedMultiplayer);
     if (this.position.x <= -2399) {
       this.position.x = 0;
     }
@@ -73,7 +87,7 @@ class Obstacle {
     };
     this.width = 34;
     this.height = 70;
-    this.velocity = 8;
+    this.velocity = 6;
   }
 
   draw() {
@@ -85,7 +99,7 @@ class Obstacle {
 
   update() {
     this.draw();
-    this.position.x -= this.velocity;
+    this.position.x -= (this.velocity + gameSpeedMultiplayer);
     if (this.position.x <= -3000) {
       this.position.x = Math.floor(Math.random() * 100) + 100;
     }
@@ -98,6 +112,11 @@ const obstacle = new Obstacle();
 
 function animate() {
   if (!startGame) return;
+  
+  if (gameSpeedMultiplayer < 8){
+     gameSpeedMultiplayer += 0.001;
+  }
+ 
   score += 0.01;
   requestAnimationFrame(animate);
   c.clearRect(0, 0, innerWidth, innerHeight);
@@ -138,11 +157,20 @@ function endGame() {
   backgroundMusic.currentTime = 0;
   playGameOverSound();
   let p = document.createElement("div");
+  p.classList.add('score')
   p.textContent = "Your Score is: " + Math.round(score);
   document.body.appendChild(p);
+  let btn = document.createElement("button");
+  btn.textContent = "Restart";
+  document.body.appendChild(btn);
+  btn.addEventListener('click', () => {
+    resetGame();
+    p.remove();
+    btn.remove();
+  })
 }
 
-const button = document.querySelector("button");
+const button = document.getElementById('startGame');
 button.addEventListener("click", () => {
   startGame = true;
   score = 0;
@@ -150,6 +178,7 @@ button.addEventListener("click", () => {
   playBackgroundMusic();
   animate();
 });
+
 let isBackgroundMusicPlaying = false;
 
 function playBackgroundMusic() {
@@ -191,3 +220,12 @@ addEventListener("keydown", ({ code }) => {
     pauseBackgroundMusic();
   }
 });
+
+function resetGame (){
+  ground.position.x = 0  
+  obstacle.position.x = Math.floor(Math.random() * 100 + 100),
+  gameSpeedMultiplayer = 0;
+  startGame = true;
+  playBackgroundMusic();
+  animate();
+}

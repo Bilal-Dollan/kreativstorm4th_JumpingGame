@@ -21,8 +21,21 @@ button{
     font-size: large;
     background-color: aqua;
     font-weight: bold;
+    margin: 16px;
 }
 
 #dino{
     height: 94;
+}
+
+.score{
+    width: 250px;
+    height: 100px;
+    font-size: larger;
+    background-color: rgb(208, 255, 0);
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 16px;
 }
