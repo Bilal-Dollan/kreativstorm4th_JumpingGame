@@ -223,6 +223,7 @@ addEventListener("keydown", ({ code }) => {
 });
 
 function resetGame (){
+  score = 0;
   ground.position.x = 0  
   obstacle.position.x = Math.floor(Math.random() * 100 + 100),
   gameSpeedMultiplayer = 0;
