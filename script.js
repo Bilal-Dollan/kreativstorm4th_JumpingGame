@@ -83,7 +83,7 @@ class Obstacle {
   constructor() {
     this.position = {
       x: Math.floor(Math.random() * 100 + 100),
-      y: canvas.height - 80,
+      y: canvas.height - 80 ,
     };
     this.width = 34;
     this.height = 70;
@@ -92,8 +92,9 @@ class Obstacle {
 
   draw() {
     let obstacleImage = document.getElementById("obstacle");
+    let obstacle2Image = document.getElementById("obstacle2")
     c.drawImage(obstacleImage, this.position.x + 1280, this.position.y);
-    c.drawImage(obstacleImage, this.position.x + 2000, this.position.y);
+    c.drawImage(obstacle2Image, this.position.x + 2000, this.position.y - 35);
     c.drawImage(obstacleImage, this.position.x + 3000, this.position.y);
   }
 
